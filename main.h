@@ -52,5 +52,7 @@ int _printf(const char *format, ...)
 
 /*prototypes*/
 int _printf(const char *format, ...);
+int get_function(char s, va_list args);
+int _putchar(char c);
 
 #endif
