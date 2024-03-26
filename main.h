@@ -4,42 +4,52 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include "main.h"
+#include <unistd.h>
 /**
- * struct format - This is a typedef struct
- * @opt: Pointer type char
- * @call_fun: Pointer to call the function
- */
-typedef struct format
-{
-	char *opt;
-	int (*call_fun)();
-} format_t;
-/**
- * _printf - function that prints based on format specifier
- * @format: takes in format specifier
- * Return: return pointer index
+ * _printf - Emulate the original.
+ * @format: Format by specifier.
+ * Return: count of chars.
  */
 int _printf(const char *format, ...)
 {
-	va_list valist;
-	int count;
-	format_t get_opt[] = {
-		{"c", set_char},
-		{"s", set_string},
-		{"i", set_decimal},
-		{"d", set_decimal},
-		{"%", print_percent},
-		{NULL, NULL}
-		};
-	if (!format)
-	{
+	int i = 0, count = 0, count_fun;
+	va_list args;
+
+	va_start(args, format);
+	if (!format || (format[0] == '%' && !format[1]))
 		return (-1);
+	if (format[0] == '%' && format[1] == ' ' && !format[2])
+		return (-1);
+	while (format[i])
+	{
+		count_fun = 0;
+		if (format[i] == '%')
+			{
+				if (!format[i + 1] || (format[i + 1] == ' ' && !format[i + 2]))
+					{
+						count = -1;
+						break;
+					}
+				count_fun += get_function(format[i + 1], args);
+				if (count_fun == 0)
+					count += _putchar(format[i + 1]);
+				if (count_fun == -1)
+					count = -1;
+				i++;
+			}
+		else
+		{
+			(count == -1) ? (_putchar(format[i])) : (count += _putchar(format[i]));
+		}
+		i++;
+		if (count != -1)
+			count += count_fun;
 	}
-	va_start(valist, format);
-	count = parse_format(format, get_opt, valist);
-	va_end(valist);
+	va_end(args);
 	return (count);
 }
+
 /*prototypes*/
 int _printf(const char *format, ...);
 
