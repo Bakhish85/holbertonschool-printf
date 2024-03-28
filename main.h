@@ -29,7 +29,8 @@ void free_array(char *arr);
 int numlen(int num);
 int print_str(char *str);
 char *num_to_string(int num, char *str);
-
+int _strlen(char *s);
+char *itoa(int a);
 /*Conversion specifiers*/
 int print_char(va_list args);
 
