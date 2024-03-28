@@ -1,47 +1,67 @@
 #include "main.h"
-#include <unistd.h>
+
 /**
- * _printf - Emulate the original.
+ * write_percent - prints '%' and increases counter if fchar is '%'
+ * @fchar: char
+ * @size: printed size
+ * @count: counter for parent function
  *
- * @format: Format by specifier.
- *
- * Return: count of chars.
  */
+
+void write_percent(char fchar, int *size, int *count)
+{
+	*size += write(1, "%", 1);
+	if (fchar == '%')
+		*count = *count + 1;
+}
+/**
+ * _printf - produces output according to a format
+ *
+ * @format: varrr
+ *
+ * Return: the number of characters printed
+ */
+
 int _printf(const char *format, ...)
 {
-	int i = 0, count = 0, count_fun;
-	va_list args;
+	va_list ptr;
+	int x, i = 0, size = 0;
+	char s, str[13];
 
-	va_start(args, format);
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
+	va_start(ptr, format);
+	if (format == NULL)
+		exit(98);
 	while (format[i])
 	{
-		count_fun = 0;
-		if (format[i] == '%')
-		{
-			if (!format[i + 1] || (format[i + 1] == ' ' && !format[i + 2]))
-			{
-				count = -1;
-				break;
-			}
-			count_fun += get_function(format[i + 1], args);
-			if (count_fun == 0)
-				count += _putchar(format[i + 1]);
-			if (count_fun == -1)
-				count = -1;
-			i++;
-		}
+		if (format[i] != '%')
+			size += write(1, format + i, 1);
 		else
 		{
-			(count == -1) ? (_putchar(format[i])) : (count += _putchar(format[i]));
+			if (format[i + 1] && format[i + 1] == 'c')
+			{
+				s = va_arg(ptr, int);
+				size += write(1, &s, 1);
+				i++;
+			}
+			else if (format[i + 1] && format[i + 1] == 's')
+			{
+				size += print_str(va_arg(ptr, char *));
+				i++;
+			}
+			else if (format[i + 1] && (format[i + 1] == 'd' || format[i + 1] == 'i'))
+			{
+				x = va_arg(ptr, int);
+				size += write(1, num_to_string(x, str), strlen(num_to_string(x, str)));
+				i++;
+			}
+			else if (format[i + 1])
+			{
+				write_percent(format[i + 1], &size, &i);
+			}
 		}
+		free_array(str);
 		i++;
-		if (count != -1)
-			count += count_fun;
 	}
-	va_end(args);
-	return (count);
+	va_end(ptr);
+	return (size == 0 ? -1 : size);
 }
