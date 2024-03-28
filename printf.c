@@ -1,67 +1,71 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdarg.h>
 #include "main.h"
-
 /**
- * write_percent - prints '%' and increases counter if fchar is '%'
- * @fchar: char
- * @size: printed size
- * @count: counter for parent function
- *
+ * handle_print - function that handles printing different data types
+ * @format: Pointer to the format
+ * @i: the iterator for the format iteration
+ * @el: list pointer
+ * Return: the size
  */
-
-void write_percent(char fchar, int *size, int *count)
+int handle_print(const char *format, int *i, va_list *el)
 {
-	*size += write(1, "%", 1);
-	if (fchar == '%')
-		*count = *count + 1;
+	int size = 0;
+	char *str;
+
+	switch (format[++(*i)])
+	{
+		case 'c':
+			_putchar(va_arg(*el, int));
+			size++;
+			break;
+		case 's':
+			str = va_arg(*el, char *);
+			str == NULL ? str = "(null)" : str;
+			size += write(1, str, _strlen(str));
+			break;
+		case '%':
+			_putchar('%'), size++;
+			break;
+		case 'i':
+		case 'd':
+			str = itoa(va_arg(*el, int));
+			size += write(1, str, _strlen(str));
+			break;
+		case '\0':
+			(*i)--;
+			break;
+		default:
+			_putchar('%');
+			size = size + _printf("%c", format[*i]) + 1;
+			break;
+	}
+	return (size);
 }
 /**
- * _printf - produces output according to a format
+ * _printf - Entry point
  *
- * @format: varrr
+ * @format: format str
  *
- * Return: the number of characters printed
+ * Return: The size
  */
-
 int _printf(const char *format, ...)
 {
-	va_list ptr;
-	int x, i = 0, size = 0;
-	char s, str[13];
+	va_list el;
+	int i, size = 0;
 
-	va_start(ptr, format);
-	if (format == NULL)
-		exit(98);
-	while (format[i])
-	{
+	va_start(el, format);
+	for (i = 0; format && format[i]; i++)
 		if (format[i] != '%')
-			size += write(1, format + i, 1);
-		else
 		{
-			if (format[i + 1] && format[i + 1] == 'c')
-			{
-				s = va_arg(ptr, int);
-				size += write(1, &s, 1);
-				i++;
-			}
-			else if (format[i + 1] && format[i + 1] == 's')
-			{
-				size += print_str(va_arg(ptr, char *));
-				i++;
-			}
-			else if (format[i + 1] && (format[i + 1] == 'd' || format[i + 1] == 'i'))
-			{
-				x = va_arg(ptr, int);
-				size += write(1, num_to_string(x, str), strlen(num_to_string(x, str)));
-				i++;
-			}
-			else if (format[i + 1])
-			{
-				write_percent(format[i + 1], &size, &i);
-			}
+			write(1, format + i, 1);
+			size++;
 		}
-		free_array(str);
-		i++;
-	}
-	va_end(ptr);
-	return (size == 0 ? -1 : size);
+		else
+			size += handle_print(format, &i, &el);
+	va_end(el);
+	if (size == 0)
+		return (-1);
+	return (size);
 }
