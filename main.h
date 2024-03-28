@@ -31,6 +31,6 @@ int print_str(char *str);
 char *num_to_string(int num, char *str);
 
 /*Conversion specifiers*/
-int print_char(va_list args)
+int print_char(va_list args);
 
 #endif
