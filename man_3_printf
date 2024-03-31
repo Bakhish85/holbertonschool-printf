@@ -1,7 +1,6 @@
-.TH PRINTF 1 03-31-2024 Printf\ 0.1 Library\ Function\ Manual
-
+.TH PRINTF 1 03-31-2024 Printf
 .SH NAME
-printf - format and print data
+printf 
 
 .SH SYNOPSIS
 int _printf(const char *format, ...);
