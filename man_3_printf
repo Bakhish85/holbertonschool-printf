@@ -1,26 +1,105 @@
-#!/bin/bash
-.TH _PRINTF 1 "November 2023" "Version 1.0" "User Commands"
+.TH PRINTF 1 03-31-2024 Printf\ 0.1 Library\ Function\ Manual
 
 .SH NAME
-_printf \- format and print data
+printf - format and print data
 
 .SH SYNOPSIS
-.B _printf
-[\fIFORMAT\fR] \fIARGUMENTS\fR
+int _printf(const char *format, ...);
 
 .SH DESCRIPTION
-The \fI_printf\fR function formats and prints data to the standard output according to the specified \fIFORMAT\fR.
+
+This project is a simulation of the printf function in C with its most important features, it was made in the software development program of Holberton School.
+Its functionality is to print ARGUMENT(s) according to FORMAT.
 
 .SH OPTIONS
-.TP
-.B \-h, \-\-help
-Display help message.
+
+A character that specifies the type of conversion to be applied.  The conversion specifiers and their meanings are:
+
+.B d, i 
+.RS
+The  int  argument  is  converted to signed decimal notation and prints this.
+
+.RE 
+.B o, u, x, X
+.RS
+The  unsigned  int argument is converted to unsigned octal (o), unsigned decimal (u), or unsigned hexadecimal (x and X) notation, "x" is to lowercase and "X" is to uppercase.
+
+.RE 
+.B b
+.RS
+Prints a converted number to binary (base 2).
+
+.RE
+.B c
+.RS
+The int argument is converted to an unsigned char, and the resulting character is  written. 
+
+.RE
+.B s
+.RS
+Prints a string assign it in parameter's position. If string does not exist prints "(null)" in the same position.
+
+.RE
+.B p
+.RS
+The void * pointer argument is printed in hexadecimal (0x + %lx), prints an address.
+
+.RE
+.B r 
+.RS
+Prints a reversed string.
+
+.RE
+.B R
+.RS
+Converts a string to rot13 and prints this.
+
+.RE
+.B %
+.RS
+A '%' is written.  No argument is converted.  The complete conversion specification is '%%'.
+
+.SH RETURN VALUE
+
+Upon successful return, these functions return the number of characters printed (excluding the null  byte  used  to  end  output  to strings). 
 
 .SH EXAMPLES
-Display a usage example here.
 
-.SH AUTHOR
-Your Name <your.email@example.com>
+To call the _printf() function the next code is required:
 
-.SH SEE ALSO
-Any related commands or documentation.
+#include "main.h"
+
+int main() 
+.TP
+\r{
+.TP
+	_printf("string to print");
+.TP
+	return (0);
+.TP
+\r}
+
+.TP
+Here's an example of how does the parameters work in our _printf() function:
+.TP
+#include "main.h"
+.TP
+int main()
+.TP
+\r{
+.TP
+	_printf("Cohort: %i", 24);
+.TP
+	return (0);
+.TP
+\r}
+.TP
+The output of this main function will be:
+.TP
+Cohort: 24
+
+.SH AUTHORS
+
+Ravan Mustafazada
+.TP
+\rBakhish Umudlu
