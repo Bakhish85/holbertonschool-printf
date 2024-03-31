@@ -1,45 +1,26 @@
 #!/bin/bash
-echo ".\" Manual page for printf
-.TH  PRINTF 3.3 "2023-12-02"
+.TH _PRINTF 1 "November 2023" "Version 1.0" "User Commands"
 
 .SH NAME
-printf
+_printf \- format and print data
 
 .SH SYNOPSIS
-\fB#include <stdlib.h>\fR
-.br
-\fB#include <unistd.h>\fR
-.br
-\fB#include <stdarg.h>\fR
-.br
-\fBint _printf(const char *format, ...);\fR
+.B _printf
+[\fIFORMAT\fR] \fIARGUMENTS\fR
+
 .SH DESCRIPTION
-The \fB_printf\fR function is very similar to the printf function from the standard c library.But it is a variadic function that returns the size of the entered characters. The function accepts as argument the format string (*format) and different data types.
-.SH RETURN VALUE
-The function returns the size of the printed characters of the entered string. in case of failure, it returns -1.
-.SH FORMAT SPECIFIERS
-The argument *format can cointain different format specifiers followed by percentage(%)
+The \fI_printf\fR function formats and prints data to the standard output according to the specified \fIFORMAT\fR.
+
+.SH OPTIONS
 .TP
-symbol. It can accept the following specifiers:
-.TP
-\fB%c\fR
-For printing one character
-.TP
-\fB%s\fR
-For printing the string
-.TP
-\fB%d and %i\R
-For printing the decimal integers
+.B \-h, \-\-help
+Display help message.
+
 .SH EXAMPLES
-.P
-\fBprintf("Negative:[%d]\n", -762534);\fR
-\fBprintf("Unsigned hexadecimal:[%x, %X]\n", ui, ui);\fR
-\fBprintf("Character:[%c]\n", 'H');\fR
-\fBprintf("String:[%s]\n", "I am a string !");\fR
-.SH SEE ALSO
-\fBprinf(),write(),va_start(),va_arg(),va_end()\fR
+Display a usage example here.
+
 .SH AUTHOR
-\fBCahid and Elvin\fR" > _printf.1
-mv _printf.1 /usr/local/man/man1/
-gzip -f /usr/local/man/man1/_printf.1
-man _printf
+Your Name <your.email@example.com>
+
+.SH SEE ALSO
+Any related commands or documentation.
